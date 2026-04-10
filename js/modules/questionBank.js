@@ -414,7 +414,7 @@ export const INDEPENDENT_QUESTION_BANK = Object.entries(DIMENSION_QUESTION_TEXTS
     id: `${dim.toLowerCase()}_independent_idx${idx + 1}`,
     dim,
     text,
-    options: DIMENSION_OPTIONS[dim].map(opt => ({ ...opt }))
+    options: DIMENSION_OPTIONS[dim]
   })));
 
 if (INDEPENDENT_QUESTION_BANK.length !== 300) {

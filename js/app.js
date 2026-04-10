@@ -316,6 +316,12 @@ import { INDEPENDENT_QUESTION_BANK } from './modules/questionBank.js';
     ];
     const QUESTIONS_PER_DIMENSION = 3;
     const QUESTION_BANK = INDEPENDENT_QUESTION_BANK;
+    const QUESTION_BANK_BY_DIM = QUESTION_BANK.reduce((acc, q) => {
+      if (!q.dim || !dimensionMeta[q.dim]) return acc;
+      if (!acc[q.dim]) acc[q.dim] = [];
+      acc[q.dim].push(q);
+      return acc;
+    }, {});
 
     const TYPE_LIBRARY = {
   "CTRL": {
@@ -728,17 +734,10 @@ import { INDEPENDENT_QUESTION_BANK } from './modules/questionBank.js';
       return arr;
     }
 
-    function sampleQuestionsByDimension(questionBank, perDim) {
-      const grouped = questionBank.reduce((acc, q) => {
-        if (!q.dim || !dimensionMeta[q.dim]) return acc;
-        if (!acc[q.dim]) acc[q.dim] = [];
-        acc[q.dim].push(q);
-        return acc;
-      }, {});
-
+    function sampleQuestionsByDimension(perDim) {
       const sampled = [];
       dimensionOrder.forEach(dim => {
-        const candidates = shuffle(grouped[dim] || []);
+        const candidates = shuffle(QUESTION_BANK_BY_DIM[dim] || []);
         sampled.push(...candidates.slice(0, Math.min(perDim, candidates.length)));
       });
       return shuffle(sampled);
@@ -1051,7 +1050,7 @@ import { INDEPENDENT_QUESTION_BANK } from './modules/questionBank.js';
     function startTest(preview = false) {
       app.previewMode = preview;
       app.answers = {};
-      const sampledRegular = sampleQuestionsByDimension(QUESTION_BANK, QUESTIONS_PER_DIMENSION);
+      const sampledRegular = sampleQuestionsByDimension(QUESTIONS_PER_DIMENSION);
       const insertIndex = Math.floor(Math.random() * sampledRegular.length) + 1;
       app.shuffledQuestions = [
         ...sampledRegular.slice(0, insertIndex),
