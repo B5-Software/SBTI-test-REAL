@@ -832,16 +832,14 @@ import { INDEPENDENT_QUESTION_BANK } from './modules/questionBank.js';
       return 'H';
     }
 
-    function levelNum(level) {
-      return { L: 1, M: 2, H: 3 }[level];
-    }
-
     const LEVEL_TARGET_AVG = Object.freeze({ L: 1, M: 2, H: 3 });
     const MIN_DIMENSION_WEIGHT = 1;
     const DIMENSION_COUNT = dimensionOrder.length;
+    const VALID_LEVELS = new Set(['L', 'M', 'H']);
 
     function levelTargetScore(level, questionCount) {
-      return LEVEL_TARGET_AVG[level] * Math.max(1, questionCount);
+      const safeLevel = VALID_LEVELS.has(level) ? level : 'M';
+      return LEVEL_TARGET_AVG[safeLevel] * Math.max(1, questionCount);
     }
 
     function dimMaxDelta(questionCount) {
@@ -861,20 +859,40 @@ import { INDEPENDENT_QUESTION_BANK } from './modules/questionBank.js';
     }
 
     function parsePattern(pattern) {
-      return pattern.replace(/-/g, '').split('');
+      return String(pattern || '')
+        .replace(/-/g, '')
+        .split('')
+        .filter(level => VALID_LEVELS.has(level));
+    }
+
+    function normalizePatternLevels(pattern) {
+      const levels = parsePattern(pattern);
+      return dimensionOrder.map((_, idx) => levels[idx] || 'M');
+    }
+
+    function getTypeMeta(code) {
+      const meta = TYPE_LIBRARY[code];
+      if (meta) return meta;
+      return {
+        code,
+        cn: '未定义类型',
+        intro: '该类型暂无文案。',
+        desc: '该类型缺少描述，系统已使用兜底信息。'
+      };
     }
 
     function buildDimensionWeights() {
       const distributions = dimensionOrder.map(() => ({ L: 0, M: 0, H: 0 }));
       NORMAL_TYPES.forEach(type => {
         parsePattern(type.pattern).forEach((level, idx) => {
+          if (!distributions[idx]) return;
           distributions[idx][level] += 1;
         });
       });
 
       const maxEntropy = Math.log2(3);
+      const total = Math.max(NORMAL_TYPES.length, 1);
       return distributions.reduce((acc, dist, idx) => {
-        const total = NORMAL_TYPES.length;
         let entropy = 0;
         ['L', 'M', 'H'].forEach(level => {
           const p = dist[level] / total;
@@ -889,10 +907,11 @@ import { INDEPENDENT_QUESTION_BANK } from './modules/questionBank.js';
     // 每增加 1 点作答差异（同维度内不同题目的答案差值），降低 0.15 的维度置信权重；
     // 该系数用于“轻惩罚”波动作答，避免某一维偶发冲突答案对结果产生过强影响。
     const CONSISTENCY_PENALTY_FACTOR = 0.15;
+    const MIN_CONSISTENCY_WEIGHT = 0.4;
     function dimensionConsistencyWeight(answerList) {
       if (!answerList || answerList.length < 2) return 1;
       const spread = Math.max(...answerList) - Math.min(...answerList);
-      return 1 - spread * CONSISTENCY_PENALTY_FACTOR;
+      return Math.max(MIN_CONSISTENCY_WEIGHT, 1 - spread * CONSISTENCY_PENALTY_FACTOR);
     }
 
     const DIMENSION_WEIGHTS = buildDimensionWeights();
@@ -928,31 +947,34 @@ import { INDEPENDENT_QUESTION_BANK } from './modules/questionBank.js';
         const consistency = dimensionConsistencyWeight(dimensionAnswers[dim]);
         return sum + dimWeight * consistency * dimMaxDelta(questionCountByDim[dim] || 0);
       }, 0);
+      const safeMaxDistance = weightedMaxDistance > 0 ? weightedMaxDistance : 1;
 
       const ranked = NORMAL_TYPES.map(type => {
-        const patternLevels = parsePattern(type.pattern);
+        const patternLevels = normalizePatternLevels(type.pattern);
         let distance = 0;
         let exact = 0;
         let weightedExact = 0;
 
-        for (let i = 0; i < patternLevels.length; i++) {
+        for (let i = 0; i < DIMENSION_COUNT; i++) {
           const dim = dimensionOrder[i];
+          const targetLevel = patternLevels[i];
           const dimWeight = DIMENSION_WEIGHTS[dim] || 1;
           const consistency = dimensionConsistencyWeight(dimensionAnswers[dim]);
           const totalWeight = dimWeight * consistency;
           const userScore = rawScores[dim];
-          const targetScore = levelTargetScore(patternLevels[i], questionCountByDim[dim] || 0);
+          const targetScore = levelTargetScore(targetLevel, questionCountByDim[dim] || 0);
           const diff = Math.abs(userScore - targetScore);
 
           distance += diff * totalWeight;
-          if (levels[dim] === patternLevels[i]) {
+          if (levels[dim] === targetLevel) {
             exact += 1;
             weightedExact += totalWeight;
           }
         }
 
-        const similarity = Math.max(0, Math.round((1 - distance / weightedMaxDistance) * 100));
-        return { ...type, ...TYPE_LIBRARY[type.code], distance, exact, weightedExact, similarity };
+        const typeMeta = getTypeMeta(type.code);
+        const similarity = Math.max(0, Math.round((1 - distance / safeMaxDistance) * 100));
+        return { ...type, ...typeMeta, distance, exact, weightedExact, similarity };
       }).sort((a, b) => {
         if (a.distance !== b.distance) return a.distance - b.distance;
         if (b.weightedExact !== a.weightedExact) return b.weightedExact - a.weightedExact;
@@ -960,28 +982,36 @@ import { INDEPENDENT_QUESTION_BANK } from './modules/questionBank.js';
         return b.similarity - a.similarity;
       });
 
-      const bestNormal = ranked[0];
+      const bestNormal = ranked[0] || {
+        ...getTypeMeta('HHHH'),
+        distance: safeMaxDistance,
+        exact: 0,
+        weightedExact: 0,
+        similarity: 0
+      };
       const drunkTriggered = getDrunkTriggered();
+      const bestSimilarity = Number.isFinite(bestNormal.similarity) ? bestNormal.similarity : 0;
+      const bestWeightedExact = Number(bestNormal.weightedExact || 0);
 
       let finalType;
       let modeKicker = '你的主类型';
-      let badge = `匹配度 ${bestNormal.similarity}% · 加权命中 ${bestNormal.weightedExact.toFixed(1)} · 精准命中 ${bestNormal.exact}/${DIMENSION_COUNT} 维`;
-      let sub = buildVibeSub('维度命中度较高，当前结果可视为你的第一人格画像。', bestNormal.code, bestNormal.similarity);
+      let badge = `匹配度 ${bestSimilarity}% · 加权命中 ${bestWeightedExact.toFixed(1)} · 精准命中 ${bestNormal.exact}/${DIMENSION_COUNT} 维`;
+      let sub = buildVibeSub('维度命中度较高，当前结果可视为你的第一人格画像。', bestNormal.code, bestSimilarity);
       let special = false;
       let secondaryType = null;
 
       if (drunkTriggered) {
-        finalType = TYPE_LIBRARY.DRUNK;
+        finalType = getTypeMeta('DRUNK');
         secondaryType = bestNormal;
         modeKicker = '隐藏人格已激活';
         badge = '匹配度 100% · 酒精异常因子已接管';
         sub = buildVibeSub('乙醇亲和性过强，系统已直接跳过常规人格审判。', finalType.code, 100);
         special = true;
-      } else if (bestNormal.similarity < 60) {
-        finalType = TYPE_LIBRARY.HHHH;
+      } else if (bestSimilarity < 60) {
+        finalType = getTypeMeta('HHHH');
         modeKicker = '系统强制兜底';
-        badge = `标准人格库最高匹配仅 ${bestNormal.similarity}%`;
-        sub = buildVibeSub('标准人格库对你的脑回路集体罢工了，于是系统把你强制分配给了 HHHH。', finalType.code, bestNormal.similarity);
+        badge = `标准人格库最高匹配仅 ${bestSimilarity}%`;
+        sub = buildVibeSub('标准人格库对你的脑回路集体罢工了，于是系统把你强制分配给了 HHHH。', finalType.code, bestSimilarity);
         special = true;
       } else {
         finalType = bestNormal;

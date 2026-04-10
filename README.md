@@ -1,7 +1,9 @@
-# SBTI 测试（镜像）
+# SBTI 测试（真实版）
 
 图片和 HTML 已拆分。
 
-本仓库由 **B5-Software** 进行二次修改与维护（包含**独立题干 300 题**、按维度分层抽取、前端模块化与娱乐文案优化），并保留原作者信息。  
-地址：https://sbti.unun.dev  
+本仓库由 **B5-Software** 进行二次修改与维护（包含**独立题干 300 题**、按维度分层抽取、前端模块化与文案优化）.
+地址：https://b5-software.github.io/SBTI-test-REAL
+
+
 原作者：[B站@蛆肉儿串儿](https://www.bilibili.com/video/BV1LpDHByET6/)

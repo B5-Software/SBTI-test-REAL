@@ -4,9 +4,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "在公开场合表达观点时，我一般对自己的立场有底气，这波我会稳住。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -14,9 +14,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "当别人否定我时，我不会马上怀疑自己一无是处。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -24,9 +24,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "做错事后，我大概率会反思，但不会全盘否定自己。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -34,9 +34,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "和优秀的人同场时，我依然能看到自己的价值。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -44,9 +44,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "我基本不太会因为一次失败就给自己贴“废物”标签，主打一个不内耗。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -54,9 +54,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "面对新的挑战，我常觉得“我可以试试”。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -64,9 +64,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "我能接受自己暂时不完美，但仍值得被尊重。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -74,9 +74,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "当朋友比我进展快时，我一般不会被彻底击垮。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -84,9 +84,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "我能在压力下保持基本的自我认可，说真的挺真实。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -94,9 +94,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "被误解时，我大概率会解释，而不是马上自我放弃。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -104,9 +104,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "遇到批评时，我能区分“问题”与“人格否定”。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -114,9 +114,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "我相信自己有能力逐步提升，而不是注定不行。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -124,9 +124,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "我不会长期沉浸在“我不配”这种想法里，就这么个路数。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -134,9 +134,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "我能在挫折后较快恢复行动。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -144,9 +144,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "我对自己的长处和短处都有相对稳定的认知。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -154,9 +154,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "在关系里，我一般不需要靠贬低自己来讨好别人。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -164,9 +164,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "我做决定时，常能听见自己内心的肯定声音，基本就是这个画风。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -174,9 +174,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "即使阶段性迷茫，我也不轻易否定全部的自己。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -184,9 +184,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "当计划没达成时，我更倾向于调整而不是自我羞辱。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -194,9 +194,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'S1',
     text: "说白了，我对“我这个人”是有基本信任的。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太符合我", value: 1 },
       { label: "一般般", value: 2 },
-      { label: "不太符合我", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -604,9 +604,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "关系里对方回复慢时，我一般能保持基本稳定，这波我会稳住。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -614,9 +614,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "我基本不太会因为一点冷淡就脑补“关系要完了”。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -624,9 +624,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "我能在亲密关系中表达需要，而不是只会憋着。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -634,9 +634,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "冲突发生时，我一般愿意沟通而不是立刻逃离。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -644,9 +644,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "我基本不太依赖“秒回”来证明自己被爱，主打一个不内耗。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -654,9 +654,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "我面对关系不确定时，仍能维持生活节奏。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -664,9 +664,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "我能承受短期情绪波动，不会马上做极端判断。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -674,9 +674,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "我在关系里较少出现“突然过度拉近或推远”。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -684,9 +684,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "我能信任对方有自己的节奏，不等于不在乎我，说真的挺真实。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -694,9 +694,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "被忽略时，我大概率会先核实事实，而不是先下结论。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -704,9 +704,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "我一般不会频繁测试对方“到底爱不爱我”。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -714,9 +714,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "我有能力在关系里同时保留安全感与自主性。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -724,9 +724,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "我能在不安时主动寻求确认，而不是情绪爆炸，就这么个路数。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -734,9 +734,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "我对关系的稳定感不完全依赖外部即时反馈。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -744,9 +744,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "我能识别自己的焦虑并用更健康方式处理。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -754,9 +754,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "我遇到误会时会优先沟通而非冷战。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -764,9 +764,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "我不会把一次争执解读成关系全盘否定，基本就是这个画风。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -774,9 +774,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "我能在关系里感到“被看见且被尊重”。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -784,9 +784,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "我允许关系有起伏，而不把波动等同于崩坏。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
@@ -794,9 +794,9 @@ export const INDEPENDENT_QUESTION_BANK = [
     dim: 'E1',
     text: "说白了，我在亲密关系中的安全感比较稳定。",
     options: [
-      { label: "很符合我", value: 1 },
+      { label: "不太这样", value: 1 },
       { label: "偶尔这样", value: 2 },
-      { label: "不太这样", value: 3 },
+      { label: "很符合我", value: 3 },
     ]
   },
   {
