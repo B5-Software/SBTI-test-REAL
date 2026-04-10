@@ -804,10 +804,13 @@ import { buildVibeSub, buildFunNote } from './modules/slang.js';
         : '全选完才会放行。世界已经够乱了，起码把题做完整。';
     }
 
+    const LOW_LEVEL_THRESHOLD = 1.67;
+    const MID_LEVEL_THRESHOLD = 2.34;
+
     function sumToLevel(score, questionCount) {
       const avg = questionCount > 0 ? score / questionCount : 2;
-      if (avg < 1.67) return 'L';
-      if (avg < 2.34) return 'M';
+      if (avg < LOW_LEVEL_THRESHOLD) return 'L';
+      if (avg < MID_LEVEL_THRESHOLD) return 'M';
       return 'H';
     }
 
@@ -819,6 +822,7 @@ import { buildVibeSub, buildFunNote } from './modules/slang.js';
     const MIN_DIMENSION_WEIGHT = 1;
     const DIMENSION_COUNT = dimensionOrder.length;
     const questionCountByDim = QUESTION_BANK.reduce((acc, q) => {
+      if (!q.dim || !dimensionMeta[q.dim]) return acc;
       acc[q.dim] = (acc[q.dim] || 0) + 1;
       return acc;
     }, {});
@@ -857,7 +861,7 @@ import { buildVibeSub, buildFunNote } from './modules/slang.js';
       }, {});
     }
 
-    // 每增加 1 点作答分歧（两题差值），降低 0.15 的维度置信权重。
+    // 每增加 1 点作答差异（同维度内不同题目的答案差值），降低 0.15 的维度置信权重。
     const CONSISTENCY_PENALTY_FACTOR = 0.15;
     function dimensionConsistencyWeight(answerList) {
       if (!answerList || answerList.length < 2) return 1;
@@ -879,6 +883,7 @@ import { buildVibeSub, buildFunNote } from './modules/slang.js';
       Object.keys(dimensionMeta).forEach(dim => { dimensionAnswers[dim] = []; });
 
       QUESTION_BANK.forEach(q => {
+        if (!q.dim || !rawScores.hasOwnProperty(q.dim)) return;
         const answer = Number(app.answers[q.id] || 0);
         rawScores[q.dim] += answer;
         if (answer) dimensionAnswers[q.dim].push(answer);
