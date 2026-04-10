@@ -1594,8 +1594,12 @@
       return { L: 1, M: 2, H: 3 }[level];
     }
 
+    const LEVEL_TARGET_SCORES = Object.freeze({ L: 2, M: 4, H: 6 });
+    const MIN_DIMENSION_WEIGHT = 1;
+    const DIMENSION_COUNT = dimensionOrder.length;
+
     function levelTargetScore(level) {
-      return { L: 2, M: 4, H: 6 }[level];
+      return LEVEL_TARGET_SCORES[level];
     }
 
     function parsePattern(pattern) {
@@ -1619,12 +1623,14 @@
           if (p > 0) entropy -= p * Math.log2(p);
         });
         const normalizedEntropy = entropy / maxEntropy;
-        acc[dimensionOrder[idx]] = Number((1 + normalizedEntropy).toFixed(3));
+        acc[dimensionOrder[idx]] = Number((MIN_DIMENSION_WEIGHT + normalizedEntropy).toFixed(3));
         return acc;
       }, {});
     }
 
+    // 每增加 1 点作答分歧（两题差值），降低 0.15 的维度置信权重。
     const CONSISTENCY_PENALTY_FACTOR = 0.15;
+    // 单维度满分差值：用户分(2~6)与目标分(2~6)最大相差 4。
     const DIMENSION_MAX_DELTA = 4;
 
     function dimensionConsistencyWeight(answerList) {
@@ -1698,7 +1704,7 @@
 
       let finalType;
       let modeKicker = '你的主类型';
-      let badge = `匹配度 ${bestNormal.similarity}% · 加权命中 ${bestNormal.weightedExact.toFixed(1)} · 精准命中 ${bestNormal.exact}/15 维`;
+      let badge = `匹配度 ${bestNormal.similarity}% · 加权命中 ${bestNormal.weightedExact.toFixed(1)} · 精准命中 ${bestNormal.exact}/${DIMENSION_COUNT} 维`;
       let sub = '维度命中度较高，当前结果可视为你的第一人格画像。';
       let special = false;
       let secondaryType = null;
