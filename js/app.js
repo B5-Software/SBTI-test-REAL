@@ -1,6 +1,5 @@
-import { EXTRA_QUESTIONS } from './modules/extraQuestions.js';
 import { buildVibeSub, buildFunNote } from './modules/slang.js';
-import { buildQuestionBankByDimension } from './modules/questionBank.js';
+import { INDEPENDENT_QUESTION_BANK } from './modules/questionBank.js';
 
     const dimensionMeta = {
       S1: { name: 'S1 自尊自信', model: '自我模型' },
@@ -315,13 +314,8 @@ import { buildQuestionBankByDimension } from './modules/questionBank.js';
         ]
       }
     ];
-    const QUESTION_BANK_SIZE = 300;
     const QUESTIONS_PER_DIMENSION = 3;
-    const QUESTION_BANK = buildQuestionBankByDimension(
-      [...questions, ...EXTRA_QUESTIONS],
-      dimensionOrder,
-      QUESTION_BANK_SIZE
-    );
+    const QUESTION_BANK = INDEPENDENT_QUESTION_BANK;
 
     const TYPE_LIBRARY = {
   "CTRL": {
@@ -827,6 +821,7 @@ import { buildQuestionBankByDimension } from './modules/questionBank.js';
         : '全选完才会放行。世界已经够乱了，起码把题做完整。';
     }
 
+    // 平均分落在 [1, 3]：<1.67 判 L，1.67~2.34 判 M，>=2.34 判 H（将区间近似三等分）。
     const LOW_LEVEL_THRESHOLD = 1.67;
     const MID_LEVEL_THRESHOLD = 2.34;
 
@@ -892,7 +887,8 @@ import { buildQuestionBankByDimension } from './modules/questionBank.js';
       }, {});
     }
 
-    // 每增加 1 点作答差异（同维度内不同题目的答案差值），降低 0.15 的维度置信权重。
+    // 每增加 1 点作答差异（同维度内不同题目的答案差值），降低 0.15 的维度置信权重；
+    // 该系数用于“轻惩罚”波动作答，避免某一维偶发冲突答案对结果产生过强影响。
     const CONSISTENCY_PENALTY_FACTOR = 0.15;
     function dimensionConsistencyWeight(answerList) {
       if (!answerList || answerList.length < 2) return 1;
