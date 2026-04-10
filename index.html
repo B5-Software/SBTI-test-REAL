@@ -1624,14 +1624,16 @@
       }, {});
     }
 
+    const CONSISTENCY_PENALTY_FACTOR = 0.15;
+    const DIMENSION_MAX_DELTA = 4;
+
     function dimensionConsistencyWeight(answerList) {
       if (!answerList || answerList.length < 2) return 1;
       const spread = Math.max(...answerList) - Math.min(...answerList);
-      return 1 - spread * 0.15;
+      return 1 - spread * CONSISTENCY_PENALTY_FACTOR;
     }
 
     const DIMENSION_WEIGHTS = buildDimensionWeights();
-    const DIMENSION_MAX_DELTA = 4;
 
     function getDrunkTriggered() {
       return app.answers[DRUNK_TRIGGER_QUESTION_ID] === 2;
@@ -1696,7 +1698,7 @@
 
       let finalType;
       let modeKicker = '你的主类型';
-      let badge = `匹配度 ${bestNormal.similarity}% · 加权命中 ${bestNormal.weightedExact.toFixed(1)}`;
+      let badge = `匹配度 ${bestNormal.similarity}% · 加权命中 ${bestNormal.weightedExact.toFixed(1)} · 精准命中 ${bestNormal.exact}/15 维`;
       let sub = '维度命中度较高，当前结果可视为你的第一人格画像。';
       let special = false;
       let secondaryType = null;
