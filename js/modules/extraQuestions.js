@@ -1,7 +1,7 @@
 export const EXTRA_QUESTIONS = [
   {
     id: 'q31', dim: 'S1',
-    text: '你刷到同龄人“年薪百万+环球旅行”的vlog，第一反应是：',
+    text: '你刷到同龄人“年薪百万+环球旅行”的vlog, 第一反应是：',
     options: [
       { label: '我酸了，感觉自己像背景板。', value: 1 },
       { label: '羡慕归羡慕，但我有我节奏。', value: 2 },

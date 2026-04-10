@@ -1,5 +1,6 @@
 import { EXTRA_QUESTIONS } from './modules/extraQuestions.js';
 import { buildVibeSub, buildFunNote } from './modules/slang.js';
+import { buildQuestionBankByDimension } from './modules/questionBank.js';
 
     const dimensionMeta = {
       S1: { name: 'S1 自尊自信', model: '自我模型' },
@@ -314,7 +315,13 @@ import { buildVibeSub, buildFunNote } from './modules/slang.js';
         ]
       }
     ];
-    const QUESTION_BANK = [...questions, ...EXTRA_QUESTIONS];
+    const QUESTION_BANK_SIZE = 300;
+    const QUESTIONS_PER_DIMENSION = 3;
+    const QUESTION_BANK = buildQuestionBankByDimension(
+      [...questions, ...EXTRA_QUESTIONS],
+      dimensionOrder,
+      QUESTION_BANK_SIZE
+    );
 
     const TYPE_LIBRARY = {
   "CTRL": {
@@ -727,6 +734,22 @@ import { buildVibeSub, buildFunNote } from './modules/slang.js';
       return arr;
     }
 
+    function sampleQuestionsByDimension(questionBank, perDim) {
+      const grouped = questionBank.reduce((acc, q) => {
+        if (!q.dim || !dimensionMeta[q.dim]) return acc;
+        if (!acc[q.dim]) acc[q.dim] = [];
+        acc[q.dim].push(q);
+        return acc;
+      }, {});
+
+      const sampled = [];
+      dimensionOrder.forEach(dim => {
+        const candidates = shuffle(grouped[dim] || []);
+        sampled.push(...candidates.slice(0, Math.min(perDim, candidates.length)));
+      });
+      return shuffle(sampled);
+    }
+
     function getVisibleQuestions() {
       const visible = [...app.shuffledQuestions];
       const gateIndex = visible.findIndex(q => q.id === 'drink_gate_q1');
@@ -808,7 +831,8 @@ import { buildVibeSub, buildFunNote } from './modules/slang.js';
     const MID_LEVEL_THRESHOLD = 2.34;
 
     function sumToLevel(score, questionCount) {
-      const avg = questionCount > 0 ? score / questionCount : 2;
+      if (questionCount <= 0) return 'M';
+      const avg = score / questionCount;
       if (avg < LOW_LEVEL_THRESHOLD) return 'L';
       if (avg < MID_LEVEL_THRESHOLD) return 'M';
       return 'H';
@@ -821,18 +845,25 @@ import { buildVibeSub, buildFunNote } from './modules/slang.js';
     const LEVEL_TARGET_AVG = Object.freeze({ L: 1, M: 2, H: 3 });
     const MIN_DIMENSION_WEIGHT = 1;
     const DIMENSION_COUNT = dimensionOrder.length;
-    const questionCountByDim = QUESTION_BANK.reduce((acc, q) => {
-      if (!q.dim || !dimensionMeta[q.dim]) return acc;
-      acc[q.dim] = (acc[q.dim] || 0) + 1;
-      return acc;
-    }, {});
 
     function levelTargetScore(level, questionCount) {
-      return LEVEL_TARGET_AVG[level] * questionCount;
+      return LEVEL_TARGET_AVG[level] * Math.max(1, questionCount);
     }
 
-    function dimMaxDelta(dim) {
-      return 2 * (questionCountByDim[dim] || 2);
+    function dimMaxDelta(questionCount) {
+      return 2 * Math.max(1, questionCount);
+    }
+
+    function getQuestionCountByDim(questionSet) {
+      const counts = dimensionOrder.reduce((acc, dim) => {
+        acc[dim] = 0;
+        return acc;
+      }, {});
+      questionSet.forEach(q => {
+        if (!q.dim || !dimensionMeta[q.dim]) return;
+        counts[q.dim] += 1;
+      });
+      return counts;
     }
 
     function parsePattern(pattern) {
@@ -876,27 +907,31 @@ import { buildVibeSub, buildFunNote } from './modules/slang.js';
     }
 
     function computeResult() {
+      const activeQuestions = app.shuffledQuestions.filter(q => !q.special);
+      const questionCountByDim = getQuestionCountByDim(activeQuestions);
       const rawScores = {};
       const levels = {};
       const dimensionAnswers = {};
       Object.keys(dimensionMeta).forEach(dim => { rawScores[dim] = 0; });
       Object.keys(dimensionMeta).forEach(dim => { dimensionAnswers[dim] = []; });
 
-      QUESTION_BANK.forEach(q => {
-        if (!q.dim || !rawScores.hasOwnProperty(q.dim)) return;
+      activeQuestions.forEach(q => {
+        if (!q.dim || !Object.prototype.hasOwnProperty.call(rawScores, q.dim)) return;
         const answer = Number(app.answers[q.id] || 0);
         rawScores[q.dim] += answer;
-        if (answer) dimensionAnswers[q.dim].push(answer);
+        if (app.answers[q.id] !== undefined && app.answers[q.id] !== null) {
+          dimensionAnswers[q.dim].push(answer);
+        }
       });
 
       Object.entries(rawScores).forEach(([dim, score]) => {
-        levels[dim] = sumToLevel(score, questionCountByDim[dim] || 2);
+        levels[dim] = sumToLevel(score, questionCountByDim[dim] || 0);
       });
 
       const weightedMaxDistance = dimensionOrder.reduce((sum, dim) => {
         const dimWeight = DIMENSION_WEIGHTS[dim] || 1;
         const consistency = dimensionConsistencyWeight(dimensionAnswers[dim]);
-        return sum + dimWeight * consistency * dimMaxDelta(dim);
+        return sum + dimWeight * consistency * dimMaxDelta(questionCountByDim[dim] || 0);
       }, 0);
 
       const ranked = NORMAL_TYPES.map(type => {
@@ -911,7 +946,7 @@ import { buildVibeSub, buildFunNote } from './modules/slang.js';
           const consistency = dimensionConsistencyWeight(dimensionAnswers[dim]);
           const totalWeight = dimWeight * consistency;
           const userScore = rawScores[dim];
-          const targetScore = levelTargetScore(patternLevels[i], questionCountByDim[dim] || 2);
+          const targetScore = levelTargetScore(patternLevels[i], questionCountByDim[dim] || 0);
           const diff = Math.abs(userScore - targetScore);
 
           distance += diff * totalWeight;
@@ -1020,12 +1055,12 @@ import { buildVibeSub, buildFunNote } from './modules/slang.js';
     function startTest(preview = false) {
       app.previewMode = preview;
       app.answers = {};
-      const shuffledRegular = shuffle(QUESTION_BANK);
-      const insertIndex = Math.floor(Math.random() * shuffledRegular.length) + 1;
+      const sampledRegular = sampleQuestionsByDimension(QUESTION_BANK, QUESTIONS_PER_DIMENSION);
+      const insertIndex = Math.floor(Math.random() * sampledRegular.length) + 1;
       app.shuffledQuestions = [
-        ...shuffledRegular.slice(0, insertIndex),
+        ...sampledRegular.slice(0, insertIndex),
         specialQuestions[0],
-        ...shuffledRegular.slice(insertIndex)
+        ...sampledRegular.slice(insertIndex)
       ];
       renderQuestions();
       showScreen('test');
